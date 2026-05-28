@@ -429,7 +429,7 @@
         <option value="">Any status</option>
         <option value="NEW">New</option>
         <option value="CONTACTED">Contacted</option>
-        <option value="CONVERTED">Converted</option>
+        <option value="DONE">Done</option>
       </select>
 
       <span class="filter-label">Month</span>
@@ -564,7 +564,7 @@
       const d = new Date(l.createdAt);
       return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
     }).length;
-    const converted = leads.filter(l => l.status === 'CONVERTED').length;
+    const converted = leads.filter(l => l.status === 'DONE').length;
     const rate      = total > 0 ? Math.round((converted / total) * 100) : 0;
 
     const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -604,7 +604,7 @@
           <select class="status-select" onchange="updateStatus(${l.id}, this.value)">
             <option value="NEW"       ${l.status==='NEW'?'selected':''}>New</option>
             <option value="CONTACTED"    ${l.status==='CONTACTED'?'selected':''}>Contacted</option>
-            <option value="CONVERTED" ${l.status==='CONVERTED'?'selected':''}>Converted</option>
+            <option value="DONE" ${l.status==='DONE'?'selected':''}>Done</option>
           </select>
         </td>
         <td class="${isToday(l.createdAt)?'date-today':'date-old'}">${formatDate(l.createdAt)}</td>
