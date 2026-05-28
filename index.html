@@ -428,7 +428,7 @@
       <select class="filter-select" id="filter-status" onchange="applyFilters()">
         <option value="">Any status</option>
         <option value="NEW">New</option>
-        <option value="CALLED">Called</option>
+        <option value="CONTACTED">Contacted</option>
         <option value="CONVERTED">Converted</option>
       </select>
 
@@ -628,6 +628,7 @@
 
   // ─── COUNTDOWN ────────────────────────────────────────────
   function startCountdown() {
+    clearInterval(countdownTimer);
     countdownVal = REFRESH_INTERVAL;
     countdownTimer = setInterval(() => {
       countdownVal--;
