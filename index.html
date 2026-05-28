@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EchoHype — Leads Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d0d;
+      --surface:   #161616;
+      --border:    #252525;
+      --accent:    #c8f135;
+      --accent-dim:#8aaa20;
+      --text:      #f0f0f0;
+      --muted:     #666;
+      --new:       #c8f135;
+      --called:    #f5a623;
+      --converted: #4ade80;
+      --danger:    #f87171;
+    }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── AUTH SCREEN ── */
+    #auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 380px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+    }
+
+    .auth-logo {
+      font-size: 13px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+    }
+
+    .auth-box h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-box p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .auth-box input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .auth-box input:focus { border-color: var(--accent); }
+
+    .auth-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .auth-btn:hover { opacity: 0.85; }
+
+    .auth-error {
+      font-size: 13px;
+      color: var(--danger);
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    /* ── MAIN DASHBOARD ── */
+    #dashboard { display: none; }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 13px;
+      font-family: 'DM Mono', monospace;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .refresh-indicator {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+    }
+
+    .refresh-indicator span {
+      color: var(--accent);
+    }
+
+    .logout-btn {
+      font-size: 12px;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover { border-color: var(--muted); color: var(--text); }
+
+    main { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    select.filter-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      transition: border-color 0.2s;
+    }
+
+    select.filter-select:focus { border-color: var(--accent); }
+
+    .result-count {
+      margin-left: auto;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      table-layout: fixed;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      padding: 0.875rem 1rem;
+      text-align: left;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: var(--surface);
+    }
+
+    td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover td { background: rgba(200, 241, 53, 0.03); }
+
+    /* column widths */
+    th:nth-child(1), td:nth-child(1) { width: 14%; }
+    th:nth-child(2), td:nth-child(2) { width: 12%; }
+    th:nth-child(3), td:nth-child(3) { width: 17%; }
+    th:nth-child(4), td:nth-child(4) { width: 13%; }
+    th:nth-child(5), td:nth-child(5) { width: 24%; white-space: normal; line-height: 1.4; }
+    th:nth-child(6), td:nth-child(6) { width: 10%; }
+    th:nth-child(7), td:nth-child(7) { width: 10%; }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-NEW       { background: rgba(200,241,53,0.12); color: var(--new); }
+    .badge-CALLED    { background: rgba(245,166,35,0.12); color: var(--called); }
+    .badge-CONVERTED { background: rgba(74,222,128,0.12); color: var(--converted); }
+
+    select.status-select {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.3rem 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+
+    select.status-select:focus { border-color: var(--accent); }
+
+    .date-today { color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; }
+    .date-old   { color: var(--muted);  font-family: 'DM Mono', monospace; font-size: 11px; }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .empty-state strong {
+      display: block;
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── LOADING ── */
+    #loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .dot-blink::after {
+      content: '...';
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    .phone-link {
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .phone-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <span class="dot-blink">Loading</span>
+</div>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo">ECHOHYPE MEDIA</div>
+    <h1>Leads Dashboard</h1>
+    <p>Enter your password to continue.</p>
+    <input type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter') tryLogin()"/>
+    <button class="auth-btn" onclick="tryLogin()">Sign in</button>
+    <div class="auth-error" id="auth-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div class="logo">ECHOHYPE / LEADS</div>
+    <div class="header-right">
+      <div class="refresh-indicator">auto-refresh in <span id="countdown">30</span>s</div>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Total leads</div>
+        <div class="stat-value" id="stat-total">—</div>
+        <div class="stat-sub">all time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">New leads</div>
+        <div class="stat-value" id="stat-new">—</div>
+        <div class="stat-sub">awaiting follow-up</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">This month</div>
+        <div class="stat-value" id="stat-month">—</div>
+        <div class="stat-sub" id="stat-month-label">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Conversion rate</div>
+        <div class="stat-value" id="stat-rate">—</div>
+        <div class="stat-sub">converted / total</div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <span class="filter-label">Status</span>
+      <select class="filter-select" id="filter-status" onchange="applyFilters()">
+        <option value="">Any status</option>
+        <option value="NEW">New</option>
+        <option value="CALLED">Called</option>
+        <option value="CONVERTED">Converted</option>
+      </select>
+
+      <span class="filter-label">Month</span>
+      <select class="filter-select" id="filter-month" onchange="applyFilters()">
+        <option value="">All months</option>
+      </select>
+
+      <span class="result-count" id="result-count"></span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Business</th>
+            <th>Challenge</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+  // ─── CONFIG ───────────────────────────────────────────────
+  const API_URL  = 'https://lead-management-fysh.onrender.com/api/leads';
+  const PASSWORD = 'echohype2026';
+  const REFRESH_INTERVAL = 30;
+
+  // ─── STATE ────────────────────────────────────────────────
+  let allLeads      = [];
+  let countdownVal  = REFRESH_INTERVAL;
+  let countdownTimer, refreshTimer;
+
+  // ─── AUTH ─────────────────────────────────────────────────
+  function tryLogin() {
+    const val = document.getElementById('pwd-input').value;
+    if (val === PASSWORD) {
+      sessionStorage.setItem('auth', 'true');
+      showDashboard();
+    } else {
+      document.getElementById('auth-error').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem('auth');
+    location.reload();
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    document.getElementById('loading').style.display = 'none';
+    if (sessionStorage.getItem('auth') === 'true') {
+      showDashboard();
+    } else {
+      document.getElementById('auth-screen').style.display = 'flex';
+    }
+  });
+
+  function showDashboard() {
+    document.getElementById('auth-screen').style.display  = 'none';
+    document.getElementById('dashboard').style.display    = 'block';
+    loadLeads();
+    startCountdown();
+  }
+
+  // ─── DATA FETCHING ────────────────────────────────────────
+  async function loadLeads() {
+    const status = document.getElementById('filter-status').value;
+    const month  = document.getElementById('filter-month').value;
+
+    let url = API_URL;
+    const params = [];
+    if (status) params.push(`status=${status}`);
+    if (month)  params.push(`month=${month}`);
+    if (params.length) url += '?' + params.join('&');
+
+    try {
+      const res   = await fetch(url);
+      const leads = await res.json();
+      allLeads = leads;
+      renderStats(leads);
+      renderTable(leads);
+      populateMonthDropdown(leads);
+      resetCountdown();
+    } catch (err) {
+      console.error('Failed to load leads:', err);
+    }
+  }
+
+  // ─── FILTERS ──────────────────────────────────────────────
+  function applyFilters() { loadLeads(); }
+
+  function populateMonthDropdown(leads) {
+    const select  = document.getElementById('filter-month');
+    const current = select.value;
+
+    const months = [...new Set(leads.map(l => {
+      const d = new Date(l.createdAt);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    }))].sort().reverse();
+
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    select.innerHTML = '<option value="">All months</option>';
+    months.forEach(m => {
+      const [y, mo] = m.split('-');
+      const opt = document.createElement('option');
+      opt.value = parseInt(mo, 10);
+      opt.textContent = `${monthNames[parseInt(mo,10)-1]} ${y}`;
+      if (String(parseInt(mo,10)) === current) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+
+  // ─── STATS ────────────────────────────────────────────────
+  function renderStats(leads) {
+    const now       = new Date();
+    const thisMonth = now.getMonth();
+    const thisYear  = now.getFullYear();
+
+    const total     = leads.length;
+    const newCount  = leads.filter(l => l.status === 'NEW').length;
+    const monthCount= leads.filter(l => {
+      const d = new Date(l.createdAt);
+      return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
+    }).length;
+    const converted = leads.filter(l => l.status === 'CONVERTED').length;
+    const rate      = total > 0 ? Math.round((converted / total) * 100) : 0;
+
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    document.getElementById('stat-total').textContent       = total;
+    document.getElementById('stat-new').textContent         = newCount;
+    document.getElementById('stat-month').textContent       = monthCount;
+    document.getElementById('stat-month-label').textContent = monthNames[thisMonth] + ' ' + thisYear;
+    document.getElementById('stat-rate').textContent        = rate + '%';
+  }
+
+  // ─── TABLE ────────────────────────────────────────────────
+  function renderTable(leads) {
+    const tbody = document.getElementById('tbody');
+    document.getElementById('result-count').textContent =
+      leads.length + ' lead' + (leads.length !== 1 ? 's' : '');
+
+    if (leads.length === 0) {
+      tbody.innerHTML = `
+        <tr><td colspan="7">
+          <div class="empty-state">
+            <strong>No leads found</strong>
+            Try a different filter or wait for new submissions.
+          </div>
+        </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = leads.map(l => `
+      <tr>
+        <td style="font-weight:600">${esc(l.name)}</td>
+        <td><a class="phone-link" href="tel:${esc(l.phoneNumber)}">${esc(l.phoneNumber)}</a></td>
+        <td style="color:#888;font-size:12px">${esc(l.email)}</td>
+        <td>${esc(l.businessName)}</td>
+        <td style="font-size:12px;color:#aaa">${esc(l.biggestChallenge)}</td>
+        <td>
+          <select class="status-select" onchange="updateStatus(${l.id}, this.value)">
+            <option value="NEW"       ${l.status==='NEW'?'selected':''}>New</option>
+            <option value="CALLED"    ${l.status==='CALLED'?'selected':''}>Called</option>
+            <option value="CONVERTED" ${l.status==='CONVERTED'?'selected':''}>Converted</option>
+          </select>
+        </td>
+        <td class="${isToday(l.createdAt)?'date-today':'date-old'}">${formatDate(l.createdAt)}</td>
+      </tr>
+    `).join('');
+  }
+
+  // ─── STATUS UPDATE ────────────────────────────────────────
+  async function updateStatus(id, newStatus) {
+    try {
+      await fetch(`${API_URL}/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      await loadLeads();
+    } catch (err) {
+      console.error('Failed to update status:', err);
+    }
+  }
+
+  // ─── COUNTDOWN ────────────────────────────────────────────
+  function startCountdown() {
+    countdownVal = REFRESH_INTERVAL;
+    countdownTimer = setInterval(() => {
+      countdownVal--;
+      document.getElementById('countdown').textContent = countdownVal;
+      if (countdownVal <= 0) {
+        loadLeads();
+      }
+    }, 1000);
+  }
+
+  function resetCountdown() {
+    countdownVal = REFRESH_INTERVAL;
+    document.getElementById('countdown').textContent = countdownVal;
+    startCountdown();
+  }
+
+  // ─── HELPERS ──────────────────────────────────────────────
+  function esc(str) {
+    if (!str) return '—';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function isToday(dateStr) {
+    const d   = new Date(dateStr);
+    const now = new Date();
+    return d.toDateString() === now.toDateString();
+  }
+
+  function formatDate(dateStr) {
+    const d   = new Date(dateStr);
+    const now = new Date();
+    const diff = Math.floor((now - d) / 86400000);
+    if (diff === 0) return 'Today ' + d.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+    if (diff === 1) return 'Yesterday';
+    return d.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+  }
+</script>
+</body>
+</html>
