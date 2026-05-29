@@ -9,16 +9,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0d0d0d;
-      --surface:   #161616;
-      --border:    #252525;
-      --accent:    #c8f135;
-      --accent-dim:#8aaa20;
+      --bg:        #090c14;
+      --surface:   #121826;
+      --border:    #2a3448;
+      --accent:    #e87d2e;
+      --accent-dim:#b96524;
       --text:      #f0f0f0;
-      --muted:     #666;
-      --new:       #c8f135;
-      --called:    #f5a623;
-      --converted: #4ade80;
+      --muted:     #8b93a3;
+      --new:       #e87d2e;
+      --called:    #f2a861;
+      --converted: #f7ca9f;
       --danger:    #f87171;
     }
 
@@ -283,7 +283,7 @@
     tr:last-child td { border-bottom: none; }
 
     tbody tr { transition: background 0.15s; }
-    tbody tr:hover td { background: rgba(200, 241, 53, 0.03); }
+    tbody tr:hover td { background: rgba(232, 125, 46, 0.08); }
 
     /* column widths */
     th:nth-child(1), td:nth-child(1) { width: 14%; }
@@ -304,25 +304,37 @@
       letter-spacing: 0.05em;
     }
 
-    .badge-NEW       { background: rgba(200,241,53,0.12); color: var(--new); }
-    .badge-CALLED    { background: rgba(245,166,35,0.12); color: var(--called); }
-    .badge-CONVERTED { background: rgba(74,222,128,0.12); color: var(--converted); }
+    .badge-NEW       { background: rgba(232,125,46,0.14); color: var(--new); }
+    .badge-CALLED    { background: rgba(242,168,97,0.18); color: var(--called); }
+    .badge-CONVERTED { background: rgba(247,202,159,0.16); color: var(--converted); }
 
     select.status-select {
-      background: transparent;
+      background: #1a1a1a;
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 0.3rem 0.5rem;
+      padding: 0.3rem 1.6rem 0.3rem 0.5rem;
       font-family: 'DM Mono', monospace;
       font-size: 11px;
-      color: var(--text);
+      color: #f0f0f0;
       cursor: pointer;
       outline: none;
       width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23f0f0f0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.4rem center;
+      color-scheme: dark;
       transition: border-color 0.2s;
     }
 
     select.status-select:focus { border-color: var(--accent); }
+
+    select.status-select option {
+      background: #1a1a1a;
+      color: #f0f0f0;
+    }
 
     .date-today { color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; }
     .date-old   { color: var(--muted);  font-family: 'DM Mono', monospace; font-size: 11px; }
@@ -461,35 +473,72 @@
 
 <script>
   // ─── CONFIG ───────────────────────────────────────────────
-  const API_URL  = 'https://lead-management-fysh.onrender.com/api/leads';
-  const PASSWORD = 'echohype2026';
+  const API_BASE = 'https://lead-management-fysh.onrender.com/api';
+  const API_URL  = `${API_BASE}/leads`;
+  const AUTH_URL = `${API_BASE}/auth`;
+  const SESSION_TOKEN_KEY = 'dashboardToken';
   const REFRESH_INTERVAL = 30;
 
   // ─── STATE ────────────────────────────────────────────────
   let allLeads      = [];
   let countdownVal  = REFRESH_INTERVAL;
-  let countdownTimer, refreshTimer;
+  let countdownTimer;
 
   // ─── AUTH ─────────────────────────────────────────────────
-  function tryLogin() {
-    const val = document.getElementById('pwd-input').value;
-    if (val === PASSWORD) {
-      sessionStorage.setItem('auth', 'true');
+  async function tryLogin() {
+    const val = document.getElementById('pwd-input').value.trim();
+    const errorEl = document.getElementById('auth-error');
+    const loginBtn = document.querySelector('.auth-btn');
+
+    if (!val) {
+      errorEl.textContent = 'Please enter your password.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    errorEl.style.display = 'none';
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Signing in...';
+
+    try {
+      const res = await fetch(AUTH_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: val })
+      });
+
+      if (!res.ok) {
+        throw new Error(res.status === 401 ? 'Invalid password.' : 'Authentication failed.');
+      }
+
+      let token = '';
+      try {
+        const data = await res.json();
+        token = data?.token || '';
+      } catch (_) {
+        // Allow auth endpoints that return empty 200 responses.
+      }
+
+      sessionStorage.setItem(SESSION_TOKEN_KEY, token || 'validated');
       showDashboard();
-    } else {
-      document.getElementById('auth-error').style.display = 'block';
+    } catch (err) {
+      errorEl.textContent = err.message || 'Authentication failed.';
+      errorEl.style.display = 'block';
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Sign in';
     }
   }
 
   function logout() {
-    sessionStorage.removeItem('auth');
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
     location.reload();
   }
 
   // ─── INIT ─────────────────────────────────────────────────
   window.addEventListener('load', () => {
     document.getElementById('loading').style.display = 'none';
-    if (sessionStorage.getItem('auth') === 'true') {
+    if (sessionStorage.getItem(SESSION_TOKEN_KEY)) {
       showDashboard();
     } else {
       document.getElementById('auth-screen').style.display = 'flex';
@@ -501,6 +550,11 @@
     document.getElementById('dashboard').style.display    = 'block';
     loadLeads();
     startCountdown();
+  }
+
+  function getAuthHeaders() {
+    const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
+    return token && token !== 'validated' ? { Authorization: `Bearer ${token}` } : {};
   }
 
   // ─── DATA FETCHING ────────────────────────────────────────
@@ -515,7 +569,12 @@
     if (params.length) url += '?' + params.join('&');
 
     try {
-      const res   = await fetch(url);
+      const res = await fetch(url, { headers: getAuthHeaders() });
+      if (res.status === 401) {
+        logout();
+        return;
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const leads = await res.json();
       allLeads = leads;
       renderStats(leads);
@@ -617,7 +676,10 @@
     try {
       await fetch(`${API_URL}/${id}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders()
+        },
         body: JSON.stringify({ status: newStatus })
       });
       await loadLeads();
