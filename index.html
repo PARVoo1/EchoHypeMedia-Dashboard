@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EchoHype — Leads Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -13,15 +13,14 @@
       --surface:   #1a1f2e;
       --surface-2: #252d3d;
       --border:    #2a3448;
-      --accent:    #e87d2e;
-      --accent-dim:#b96524;
+      --accent:    #7a64dc;
+      --accent-dim:#5d4fa8;
       --text:      #f0f0f0;
       --muted:     #8b93a3;
-      --new:       #e87d2e;
+      --new:       #7a64dc;
       --called:    #3b82f6;
       --converted: #10b981;
       --danger:    #f87171;
-      --sidebar-width: 240px;
     }
 
     body {
@@ -34,86 +33,6 @@
 
     /* ── LAYOUT ── */
 
-    /* ── SIDEBAR ── */
-    #sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 1.5rem 1.25rem;
-      z-index: 100;
-    }
-
-    .sidebar-logo {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 2.5rem;
-      letter-spacing: 0.05em;
-    }
-
-    .sidebar-nav {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.875rem 1rem;
-      border-radius: 8px;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-      cursor: pointer;
-      border: none;
-      background: none;
-      font-family: 'Syne', sans-serif;
-      transition: all 0.2s;
-    }
-
-    .nav-item:hover {
-      color: var(--text);
-      background: rgba(232, 125, 46, 0.1);
-    }
-
-    .nav-item.active {
-      background: rgba(232, 125, 46, 0.15);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .sidebar-user {
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    /* ── MAIN CONTENT WRAPPER ── */
-    #dashboard, #loading, #auth-screen {
-      flex: 1;
-      margin-left: var(--sidebar-width);
-    }
-
-    #loading {
-      margin-left: 0;
-      display: flex;
-    }
-
-    #auth-screen {
-      margin-left: 0;
-      display: flex;
-    }
 
     /* ── AUTH SCREEN ── */
     #auth-screen {
@@ -200,7 +119,6 @@
     /* ── MAIN DASHBOARD ── */
     #dashboard {
       flex: 1;
-      margin-left: var(--sidebar-width);
       display: flex;
       flex-direction: column;
     }
@@ -267,7 +185,7 @@
     .logout-btn:hover {
       border-color: var(--accent);
       color: var(--accent);
-      background: rgba(232, 125, 46, 0.1);
+      background: rgba(122, 100, 220, 0.1);
     }
 
     main {
@@ -371,7 +289,7 @@
       cursor: pointer;
       outline: none;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e87d2e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a64dc' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.6rem center;
       transition: all 0.2s;
@@ -442,7 +360,7 @@
     }
 
     tbody tr:hover td {
-      background: rgba(232, 125, 46, 0.1);
+      background: rgba(122, 100, 220, 0.1);
     }
 
     /* column widths */
@@ -465,7 +383,7 @@
       text-transform: capitalize;
     }
 
-    .badge-NEW       { background: rgba(232, 125, 46, 0.2); color: #ff9d53; }
+    .badge-NEW       { background: rgba(122, 100, 220, 0.2); color: #a896f0; }
     .badge-CONTACTED { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
     .badge-DONE      { background: rgba(16, 185, 129, 0.2); color: #34d399; }
 
@@ -483,7 +401,7 @@
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e87d2e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a64dc' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.4rem center;
       color-scheme: dark;
@@ -561,27 +479,6 @@
   <span class="dot-blink">Loading</span>
 </div>
 
-<!-- SIDEBAR (Hidden in auth, shown in dashboard) -->
-<aside id="sidebar" style="display: none;">
-  <div class="sidebar-logo">EchoHype</div>
-  <nav class="sidebar-nav">
-    <a href="#" class="nav-item active">
-      <span>📊</span>
-      Dashboard
-    </a>
-    <a href="#" class="nav-item">
-      <span>📋</span>
-      Leads
-    </a>
-    <a href="#" class="nav-item">
-      <span>⚙️</span>
-      Settings
-    </a>
-  </nav>
-  <div class="sidebar-user">
-    <div style="font-weight: 600;">EchoHype Media</div>
-  </div>
-</aside>
 
 <!-- AUTH -->
 <div id="auth-screen">
@@ -743,7 +640,6 @@
 
    function logout() {
      sessionStorage.removeItem(SESSION_TOKEN_KEY);
-     document.getElementById('sidebar').style.display = 'none';
      location.reload();
    }
 
@@ -760,7 +656,6 @@
    function showDashboard() {
      document.getElementById('auth-screen').style.display  = 'none';
      document.getElementById('dashboard').style.display    = 'block';
-     document.getElementById('sidebar').style.display      = 'block';
      loadLeads();
      startCountdown();
    }
