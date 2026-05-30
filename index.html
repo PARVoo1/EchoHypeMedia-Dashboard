@@ -9,17 +9,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #090c14;
-      --surface:   #121826;
+      --bg:        #0f1419;
+      --surface:   #1a1f2e;
+      --surface-2: #252d3d;
       --border:    #2a3448;
       --accent:    #e87d2e;
       --accent-dim:#b96524;
       --text:      #f0f0f0;
       --muted:     #8b93a3;
       --new:       #e87d2e;
-      --called:    #f2a861;
-      --converted: #f7ca9f;
+      --called:    #3b82f6;
+      --converted: #10b981;
       --danger:    #f87171;
+      --sidebar-width: 240px;
     }
 
     body {
@@ -27,6 +29,90 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── LAYOUT ── */
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1.25rem;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'Syne', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      color: var(--text);
+      background: rgba(232, 125, 46, 0.1);
+    }
+
+    .nav-item.active {
+      background: rgba(232, 125, 46, 0.15);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar-user {
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── MAIN CONTENT WRAPPER ── */
+    #dashboard, #loading, #auth-screen {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+    }
+
+    #loading {
+      margin-left: 0;
+      display: flex;
+    }
+
+    #auth-screen {
+      margin-left: 0;
+      display: flex;
     }
 
     /* ── AUTH SCREEN ── */
@@ -36,35 +122,40 @@
       justify-content: center;
       min-height: 100vh;
       padding: 2rem;
+      background: var(--bg);
     }
 
     .auth-box {
       width: 100%;
-      max-width: 380px;
+      max-width: 420px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2.5rem;
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
     }
 
     .auth-logo {
-      font-size: 13px;
-      font-family: 'DM Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
       color: var(--accent);
-      letter-spacing: 0.1em;
-      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
 
     .auth-box h1 {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      text-align: center;
     }
 
     .auth-box p {
       font-size: 14px;
       color: var(--muted);
       margin-bottom: 2rem;
+      text-align: center;
     }
 
     .auth-box input {
@@ -107,114 +198,170 @@
     }
 
     /* ── MAIN DASHBOARD ── */
+    #dashboard {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+    }
+
     #dashboard { display: none; }
 
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.25rem 2rem;
+      padding: 1.5rem 2.5rem;
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: var(--bg);
-      z-index: 10;
+      background: var(--surface);
+      gap: 2rem;
     }
 
-    .logo {
-      font-size: 13px;
-      font-family: 'DM Mono', monospace;
-      color: var(--accent);
-      letter-spacing: 0.1em;
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 2rem;
+      margin-left: auto;
     }
 
     .refresh-indicator {
-      font-size: 12px;
-      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-family: 'Syne', sans-serif;
       color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .refresh-indicator span {
       color: var(--accent);
+      font-weight: 600;
+      min-width: 30px;
+      text-align: right;
     }
 
     .logout-btn {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
       background: none;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
       cursor: pointer;
       font-family: 'Syne', sans-serif;
       transition: all 0.2s;
     }
 
-    .logout-btn:hover { border-color: var(--muted); color: var(--text); }
+    .logout-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(232, 125, 46, 0.1);
+    }
 
-    main { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    main {
+      flex: 1;
+      padding: 2.5rem 2.5rem;
+      overflow-y: auto;
+    }
 
     /* ── STATS ── */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
     }
 
     .stat {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.25rem 1.5rem;
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .stat-icon {
+      font-size: 28px;
+      line-height: 1;
+      opacity: 0.8;
+    }
+
+    .stat-content {
+      flex: 1;
     }
 
     .stat-label {
-      font-size: 11px;
+      font-size: 12px;
       font-family: 'DM Mono', monospace;
       color: var(--muted);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 36px;
       font-weight: 700;
       color: var(--accent);
       line-height: 1;
+      margin-bottom: 0.5rem;
     }
 
     .stat-sub {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
-      margin-top: 0.4rem;
     }
 
     /* ── FILTERS ── */
     .filters {
       display: flex;
-      gap: 0.75rem;
+      gap: 1rem;
       flex-wrap: wrap;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
     }
 
     .filter-label {
-      font-size: 11px;
+      font-size: 12px;
       font-family: 'DM Mono', monospace;
       color: var(--muted);
       letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
     }
 
     select.filter-select {
-      background: var(--surface);
+      background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.5rem 2rem 0.5rem 0.75rem;
@@ -224,18 +371,22 @@
       cursor: pointer;
       outline: none;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e87d2e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.6rem center;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
 
-    select.filter-select:focus { border-color: var(--accent); }
+    select.filter-select:hover,
+    select.filter-select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
 
     .result-count {
       margin-left: auto;
-      font-size: 12px;
-      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-family: 'Syne', sans-serif;
       color: var(--muted);
     }
 
@@ -259,9 +410,9 @@
     }
 
     th {
-      padding: 0.875rem 1rem;
+      padding: 1rem 1.25rem;
       text-align: left;
-      font-size: 10px;
+      font-size: 11px;
       font-family: 'DM Mono', monospace;
       color: var(--muted);
       letter-spacing: 0.1em;
@@ -271,8 +422,8 @@
     }
 
     td {
-      padding: 0.875rem 1rem;
-      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(42, 52, 72, 0.5);
       vertical-align: middle;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -282,8 +433,17 @@
 
     tr:last-child td { border-bottom: none; }
 
-    tbody tr { transition: background 0.15s; }
-    tbody tr:hover td { background: rgba(232, 125, 46, 0.08); }
+    tbody tr {
+      transition: background 0.15s;
+    }
+
+    tbody tr:nth-child(odd) td {
+      background: rgba(25, 29, 46, 0.5);
+    }
+
+    tbody tr:hover td {
+      background: rgba(232, 125, 46, 0.1);
+    }
 
     /* column widths */
     th:nth-child(1), td:nth-child(1) { width: 14%; }
@@ -296,47 +456,53 @@
 
     .badge {
       display: inline-block;
-      font-size: 10px;
-      font-family: 'DM Mono', monospace;
-      padding: 3px 8px;
+      font-size: 11px;
+      font-family: 'Syne', sans-serif;
+      padding: 6px 12px;
       border-radius: 20px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: capitalize;
     }
 
-    .badge-NEW       { background: rgba(232,125,46,0.14); color: var(--new); }
-    .badge-CALLED    { background: rgba(242,168,97,0.18); color: var(--called); }
-    .badge-CONVERTED { background: rgba(247,202,159,0.16); color: var(--converted); }
+    .badge-NEW       { background: rgba(232, 125, 46, 0.2); color: #ff9d53; }
+    .badge-CONTACTED { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .badge-DONE      { background: rgba(16, 185, 129, 0.2); color: #34d399; }
 
     select.status-select {
-      background: #1a1a1a;
+      background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 0.3rem 1.6rem 0.3rem 0.5rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: #f0f0f0;
+      padding: 0.4rem 1.6rem 0.4rem 0.6rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      color: var(--text);
       cursor: pointer;
       outline: none;
       width: 100%;
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23f0f0f0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e87d2e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.4rem center;
       color-scheme: dark;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
 
-    select.status-select:focus { border-color: var(--accent); }
+    select.status-select:hover,
+    select.status-select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
 
     select.status-select option {
-      background: #1a1a1a;
-      color: #f0f0f0;
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 0.5rem;
     }
 
-    .date-today { color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; }
+    .date-today { color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; }
     .date-old   { color: var(--muted);  font-family: 'DM Mono', monospace; font-size: 11px; }
 
     .empty-state {
@@ -348,7 +514,7 @@
 
     .empty-state strong {
       display: block;
-      font-size: 16px;
+      font-size: 18px;
       color: var(--text);
       margin-bottom: 0.5rem;
     }
@@ -362,6 +528,7 @@
       font-family: 'DM Mono', monospace;
       font-size: 13px;
       color: var(--muted);
+      width: 100vw;
     }
 
     .dot-blink::after {
@@ -375,12 +542,17 @@
     }
 
     .phone-link {
-      color: var(--text);
+      color: var(--accent);
       text-decoration: none;
-      font-family: 'DM Mono', monospace;
+      font-family: 'Syne', sans-serif;
+      font-weight: 500;
+      transition: opacity 0.2s;
     }
 
-    .phone-link:hover { color: var(--accent); }
+    .phone-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -389,10 +561,32 @@
   <span class="dot-blink">Loading</span>
 </div>
 
+<!-- SIDEBAR (Hidden in auth, shown in dashboard) -->
+<aside id="sidebar" style="display: none;">
+  <div class="sidebar-logo">EchoHype</div>
+  <nav class="sidebar-nav">
+    <a href="#" class="nav-item active">
+      <span>📊</span>
+      Dashboard
+    </a>
+    <a href="#" class="nav-item">
+      <span>📋</span>
+      Leads
+    </a>
+    <a href="#" class="nav-item">
+      <span>⚙️</span>
+      Settings
+    </a>
+  </nav>
+  <div class="sidebar-user">
+    <div style="font-weight: 600;">EchoHype Media</div>
+  </div>
+</aside>
+
 <!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
-    <div class="auth-logo">ECHOHYPE MEDIA</div>
+    <div class="auth-logo">EchoHype</div>
     <h1>Leads Dashboard</h1>
     <p>Enter your password to continue.</p>
     <input type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter') tryLogin()"/>
@@ -404,36 +598,53 @@
 <!-- DASHBOARD -->
 <div id="dashboard">
   <header>
-    <div class="logo">ECHOHYPE / LEADS</div>
+    <div class="header-left">
+      <h2 class="header-title">Dashboard</h2>
+    </div>
     <div class="header-right">
-      <div class="refresh-indicator">auto-refresh in <span id="countdown">30</span>s</div>
+      <div class="refresh-indicator">
+        <span>↻</span>
+        <span id="countdown">30</span>s
+      </div>
       <button class="logout-btn" onclick="logout()">Sign out</button>
     </div>
   </header>
 
-  <main>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-label">Total leads</div>
-        <div class="stat-value" id="stat-total">—</div>
-        <div class="stat-sub">all time</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">New leads</div>
-        <div class="stat-value" id="stat-new">—</div>
-        <div class="stat-sub">awaiting follow-up</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">This month</div>
-        <div class="stat-value" id="stat-month">—</div>
-        <div class="stat-sub" id="stat-month-label">—</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Conversion rate</div>
-        <div class="stat-value" id="stat-rate">—</div>
-        <div class="stat-sub">converted / total</div>
-      </div>
-    </div>
+   <main>
+     <div class="stats">
+       <div class="stat">
+         <div class="stat-icon">👤</div>
+         <div class="stat-content">
+           <div class="stat-label">Total Leads</div>
+           <div class="stat-value" id="stat-total">—</div>
+           <div class="stat-sub">all time</div>
+         </div>
+       </div>
+       <div class="stat">
+         <div class="stat-icon">🔔</div>
+         <div class="stat-content">
+           <div class="stat-label">New Leads</div>
+           <div class="stat-value" id="stat-new">—</div>
+           <div class="stat-sub">awaiting follow-up</div>
+         </div>
+       </div>
+       <div class="stat">
+         <div class="stat-icon">📅</div>
+         <div class="stat-content">
+           <div class="stat-label">This Month</div>
+           <div class="stat-value" id="stat-month">—</div>
+           <div class="stat-sub" id="stat-month-label">—</div>
+         </div>
+       </div>
+       <div class="stat">
+         <div class="stat-icon">📈</div>
+         <div class="stat-content">
+           <div class="stat-label">Conversion Rate</div>
+           <div class="stat-value" id="stat-rate">—</div>
+           <div class="stat-sub">converted / total</div>
+         </div>
+       </div>
+     </div>
 
     <div class="filters">
       <span class="filter-label">Status</span>
@@ -530,10 +741,11 @@
     }
   }
 
-  function logout() {
-    sessionStorage.removeItem(SESSION_TOKEN_KEY);
-    location.reload();
-  }
+   function logout() {
+     sessionStorage.removeItem(SESSION_TOKEN_KEY);
+     document.getElementById('sidebar').style.display = 'none';
+     location.reload();
+   }
 
   // ─── INIT ─────────────────────────────────────────────────
   window.addEventListener('load', () => {
@@ -545,12 +757,13 @@
     }
   });
 
-  function showDashboard() {
-    document.getElementById('auth-screen').style.display  = 'none';
-    document.getElementById('dashboard').style.display    = 'block';
-    loadLeads();
-    startCountdown();
-  }
+   function showDashboard() {
+     document.getElementById('auth-screen').style.display  = 'none';
+     document.getElementById('dashboard').style.display    = 'block';
+     document.getElementById('sidebar').style.display      = 'block';
+     loadLeads();
+     startCountdown();
+   }
 
   function getAuthHeaders() {
     const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
