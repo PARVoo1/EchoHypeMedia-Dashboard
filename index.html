@@ -7,37 +7,464 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg:        #0f1419; --surface:   #1a1f2e; --surface-2: #252d3d;
-      --border:    #2a3448; --accent:    #7a64dc; --text:      #f0f0f0;
-      --muted:     #8b93a3; --danger:    #f87171;
+      --bg:        #0f1419;
+      --surface:   #1a1f2e;
+      --surface-2: #252d3d;
+      --border:    #2a3448;
+      --accent:    #7a64dc;
+      --accent-dim:#5d4fa8;
+      --text:      #f0f0f0;
+      --muted:     #8b93a3;
+      --new:       #7a64dc;
+      --called:    #3b82f6;
+      --converted: #10b981;
+      --danger:    #f87171;
     }
+
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg); color: var(--text);
-      min-height: 100vh; display: flex; font-size: 15px;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      font-size: 15px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    #auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; width: 100%; }
-    .auth-box { width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 3rem 2.5rem; }
-    .auth-logo { font-size: 24px; font-weight: 700; color: var(--accent); text-align: center; margin-bottom: 1.5rem; }
-    .auth-box h1 { font-size: 26px; text-align: center; margin-bottom: 0.75rem; }
-    .auth-box p { color: var(--muted); text-align: center; margin-bottom: 2rem; font-size: 14px; }
-    .auth-box input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text); margin-bottom: 1rem; outline: none; }
+
+    /* ── AUTH SCREEN ── */
+    #auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background: var(--bg);
+      width: 100%;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .auth-logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .auth-box h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .auth-box p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      text-align: center;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .auth-box input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
     .auth-box input:focus { border-color: var(--accent); }
-    .auth-btn { width: 100%; background: var(--accent); color: #0d0d0d; border: none; border-radius: 8px; padding: 0.75rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
-    .auth-error { font-size: 13px; color: var(--danger); margin-top: 0.75rem; display: none; text-align: center; }
-    #dashboard { flex: 1; flex-direction: column; display: none; }
-    header { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2.5rem; border-bottom: 1px solid var(--border); background: var(--surface); }
-    .header-title { font-size: 24px; font-weight: 700; }
-    .logout-btn { font-size: 13px; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; }
-    main { padding: 2.5rem; overflow-y: auto; }
-    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-    th, td { padding: 1rem; border-bottom: 1px solid rgba(42, 52, 72, 0.5); }
-    th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
+
+    .auth-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .auth-btn:hover { opacity: 0.85; }
+
+    .auth-error {
+      font-size: 13px;
+      color: var(--danger);
+      margin-top: 0.75rem;
+      display: none;
+      text-align: center;
+    }
+
+    /* ── MAIN DASHBOARD ── */
+    #dashboard {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      display: none;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      gap: 2rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-left: auto;
+    }
+
+    .refresh-indicator {
+      font-size: 13px;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .refresh-indicator span {
+      color: var(--accent);
+      font-weight: 600;
+      min-width: 30px;
+      text-align: right;
+    }
+
+    .logout-btn {
+      font-size: 13px;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(122, 100, 220, 0.1);
+    }
+
+    main {
+      flex: 1;
+      padding: 2.5rem 2.5rem;
+      overflow-y: auto;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .stat-content {
+      flex: 1;
+      width: 100%;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-sub {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    select.filter-select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a64dc' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      transition: all 0.2s;
+    }
+
+    select.filter-select:hover,
+    select.filter-select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .result-count {
+      margin-left: auto;
+      font-size: 13px;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--muted);
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      table-layout: fixed;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-size: 12px;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      background: var(--surface);
+    }
+
+    td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(42, 52, 72, 0.5);
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tbody tr {
+      transition: background 0.15s;
+    }
+
+    tbody tr:nth-child(odd) td {
+      background: rgba(25, 29, 46, 0.5);
+    }
+
+    tbody tr:hover td {
+      background: rgba(122, 100, 220, 0.1);
+    }
+
+    /* column widths */
+    th:nth-child(1), td:nth-child(1) { width: 14%; }
+    th:nth-child(2), td:nth-child(2) { width: 12%; }
+    th:nth-child(3), td:nth-child(3) { width: 17%; }
+    th:nth-child(4), td:nth-child(4) { width: 13%; }
+    th:nth-child(5), td:nth-child(5) { width: 24%; white-space: normal; line-height: 1.4; }
+    th:nth-child(6), td:nth-child(6) { width: 10%; }
+    th:nth-child(7), td:nth-child(7) { width: 10%; }
+
+    select.status-select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 1.6rem 0.4rem 0.6rem;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a64dc' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.4rem center;
+      color-scheme: dark;
+      transition: all 0.2s;
+    }
+
+    select.status-select:hover,
+    select.status-select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    select.status-select option {
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 0.5rem;
+    }
+
+    .date-today { color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; }
+    .date-old   { color: var(--muted);  font-family: 'DM Mono', monospace; font-size: 11px; }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 14px;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .empty-state strong {
+      display: block;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── LOADING ── */
+    #loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      width: 100vw;
+    }
+
+    .dot-blink::after {
+      content: '...';
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    .phone-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .phone-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+
+<div id="loading">
+  <span class="dot-blink">Loading</span>
+</div>
 
 <div id="auth-screen">
   <div class="auth-box">
@@ -55,13 +482,80 @@
 
 <div id="dashboard">
   <header>
-    <h2 class="header-title">Dashboard</h2>
-    <button class="logout-btn" onclick="logout()">Sign out</button>
+    <div class="header-left">
+      <h2 class="header-title">Dashboard</h2>
+    </div>
+    <div class="header-right">
+      <div class="refresh-indicator">
+        <span>↻</span>
+        <span id="countdown">30</span>s
+      </div>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
   </header>
+
   <main>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">Total Leads</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">all time</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">New Leads</div>
+          <div class="stat-value" id="stat-new">—</div>
+          <div class="stat-sub">awaiting follow-up</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">This Month</div>
+          <div class="stat-value" id="stat-month">—</div>
+          <div class="stat-sub" id="stat-month-label">—</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">Conversion Rate</div>
+          <div class="stat-value" id="stat-rate">—</div>
+          <div class="stat-sub">converted / total</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <span class="filter-label">Status</span>
+      <select class="filter-select" id="filter-status" onchange="applyFilters()">
+        <option value="">Any status</option>
+        <option value="NEW">New</option>
+        <option value="CONTACTED">Contacted</option>
+        <option value="DONE">Done</option>
+      </select>
+
+      <span class="filter-label">Month</span>
+      <select class="filter-select" id="filter-month" onchange="applyFilters()">
+        <option value="">All months</option>
+      </select>
+
+      <span class="result-count" id="result-count"></span>
+    </div>
+
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Business</th><th>Challenge</th><th>Status</th></tr></thead>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Business</th>
+          <th>Challenge</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+        </thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
@@ -69,14 +563,25 @@
 </div>
 
 <script>
-  const API_URL  = 'https://lead-management-fysh.onrender.com/api/leads';
-  const AUTH_URL = 'https://lead-management-fysh.onrender.com/api/auth';
+  // ─── CONFIG ───────────────────────────────────────────────
+  const API_BASE = 'https://lead-management-fysh.onrender.com/api';
+  const API_URL  = `${API_BASE}/leads`;
+  const AUTH_URL = `${API_BASE}/auth`;
   const SESSION_TOKEN_KEY = 'dashboardToken';
+  const REFRESH_INTERVAL = 30;
 
+  // ─── STATE ────────────────────────────────────────────────
+  let allLeads      = [];
+  let countdownVal  = REFRESH_INTERVAL;
+  let countdownTimer;
+
+  // ─── AUTH ─────────────────────────────────────────────────
   async function tryLogin() {
+    // IMPORTANT: Grabbing both username and password values
     const usrVal = document.getElementById('usr-input').value.trim();
     const pwdVal = document.getElementById('pwd-input').value.trim();
     const errorEl = document.getElementById('auth-error');
+    const loginBtn = document.querySelector('.auth-btn');
 
     if (!usrVal || !pwdVal) {
       errorEl.textContent = 'Please enter both username and password.';
@@ -84,25 +589,41 @@
       return;
     }
 
+    errorEl.style.display = 'none';
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Signing in...';
+
     try {
-      // SENDING BOTH USERNAME AND PASSWORD
+      // IMPORTANT: Sending both in the JSON body
       const res = await fetch(AUTH_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: usrVal, password: pwdVal })
       });
 
-      if (!res.ok) throw new Error('Authentication failed.');
+      if (!res.ok) {
+        let errMsg = 'Authentication failed.';
+        try {
+          const errData = await res.json();
+          if(errData.error) errMsg = errData.error;
+        } catch(e){}
+        throw new Error(res.status === 401 ? 'Invalid username or password.' : errMsg);
+      }
 
-      const data = await res.json();
-      sessionStorage.setItem(SESSION_TOKEN_KEY, data.token || 'validated');
+      let token = '';
+      try {
+        const data = await res.json();
+        token = data?.token || '';
+      } catch (_) {}
 
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'flex';
-      loadLeads();
+      sessionStorage.setItem(SESSION_TOKEN_KEY, token || 'validated');
+      showDashboard();
     } catch (err) {
-      errorEl.textContent = err.message;
+      errorEl.textContent = err.message || 'Authentication failed.';
       errorEl.style.display = 'block';
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Sign in';
     }
   }
 
@@ -111,32 +632,204 @@
     location.reload();
   }
 
-  async function loadLeads() {
-    try {
-      const res = await fetch(API_URL, {
-        headers: { Authorization: `Bearer ${sessionStorage.getItem(SESSION_TOKEN_KEY)}` }
-      });
-      if (!res.ok) return logout();
-      const leads = await res.json();
+  // ─── INIT ─────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    document.getElementById('loading').style.display = 'none';
+    if (sessionStorage.getItem(SESSION_TOKEN_KEY)) {
+      showDashboard();
+    } else {
+      document.getElementById('auth-screen').style.display = 'flex';
+    }
+  });
 
-      document.getElementById('tbody').innerHTML = leads.map(l => `
-        <tr>
-          <td>${l.name}</td><td>${l.phoneNumber}</td><td>${l.email}</td>
-          <td>${l.businessName}</td><td>${l.biggestChallenge}</td><td>${l.status}</td>
-        </tr>
-      `).join('');
+  function showDashboard() {
+    document.getElementById('auth-screen').style.display  = 'none';
+    document.getElementById('dashboard').style.display    = 'flex';
+    loadLeads();
+    startCountdown();
+  }
+
+  function getAuthHeaders() {
+    const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
+    return token && token !== 'validated' ? { Authorization: `Bearer ${token}` } : {};
+  }
+
+  // ─── DATA FETCHING ────────────────────────────────────────
+  async function loadLeads() {
+    const status = document.getElementById('filter-status').value;
+    const month  = document.getElementById('filter-month').value;
+
+    let url = API_URL;
+    const params = [];
+    if (status) params.push(`status=${status}`);
+    if (month)  params.push(`month=${month}`);
+    if (params.length) url += '?' + params.join('&');
+
+    try {
+      const res = await fetch(url, { headers: getAuthHeaders() });
+      if (res.status === 401 || res.status === 403) {
+        logout();
+        return;
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const leads = await res.json();
+      allLeads = leads;
+      renderStats(leads);
+      renderTable(leads);
+      populateMonthDropdown(leads);
+      resetCountdown();
     } catch (err) {
-      console.error(err);
+      console.error('Failed to load leads:', err);
     }
   }
 
-  window.onload = () => {
-    if (sessionStorage.getItem(SESSION_TOKEN_KEY)) {
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'flex';
-      loadLeads();
+  // ─── FILTERS ──────────────────────────────────────────────
+  function applyFilters() { loadLeads(); }
+
+  function populateMonthDropdown(leads) {
+    const select  = document.getElementById('filter-month');
+    const current = select.value;
+
+    const months = [...new Set(leads.map(l => {
+      const d = new Date(l.createdAt);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    }))].sort().reverse();
+
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    select.innerHTML = '<option value="">All months</option>';
+    months.forEach(m => {
+      const [y, mo] = m.split('-');
+      const opt = document.createElement('option');
+      opt.value = parseInt(mo, 10);
+      opt.textContent = `${monthNames[parseInt(mo,10)-1]} ${y}`;
+      if (String(parseInt(mo,10)) === current) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+
+  // ─── STATS ────────────────────────────────────────────────
+  function renderStats(leads) {
+    const now       = new Date();
+    const thisMonth = now.getMonth();
+    const thisYear  = now.getFullYear();
+
+    const total     = leads.length;
+    const newCount  = leads.filter(l => l.status === 'NEW').length;
+    const monthCount= leads.filter(l => {
+      const d = new Date(l.createdAt);
+      return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
+    }).length;
+    const converted = leads.filter(l => l.status === 'DONE').length;
+    const rate      = total > 0 ? Math.round((converted / total) * 100) : 0;
+
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    document.getElementById('stat-total').textContent       = total;
+    document.getElementById('stat-new').textContent         = newCount;
+    document.getElementById('stat-month').textContent       = monthCount;
+    document.getElementById('stat-month-label').textContent = monthNames[thisMonth] + ' ' + thisYear;
+    document.getElementById('stat-rate').textContent        = rate + '%';
+  }
+
+  // ─── TABLE ────────────────────────────────────────────────
+  function renderTable(leads) {
+    const tbody = document.getElementById('tbody');
+    document.getElementById('result-count').textContent =
+            leads.length + ' lead' + (leads.length !== 1 ? 's' : '');
+
+    if (leads.length === 0) {
+      tbody.innerHTML = `
+        <tr><td colspan="7">
+          <div class="empty-state">
+            <strong>No leads found</strong>
+            Try a different filter or wait for new submissions.
+          </div>
+        </td></tr>`;
+      return;
     }
-  };
+
+    tbody.innerHTML = leads.map(l => `
+      <tr>
+        <td style="font-weight:600">${esc(l.name)}</td>
+        <td><a class="phone-link" href="tel:${esc(l.phoneNumber)}">${esc(l.phoneNumber)}</a></td>
+        <td style="color:#888;font-size:12px">${esc(l.email)}</td>
+        <td>${esc(l.businessName)}</td>
+        <td style="font-size:12px;color:#aaa">${esc(l.biggestChallenge)}</td>
+        <td>
+          <select class="status-select" onchange="updateStatus(${l.id}, this.value)">
+            <option value="NEW"       ${l.status==='NEW'?'selected':''}>New</option>
+            <option value="CONTACTED"    ${l.status==='CONTACTED'?'selected':''}>Contacted</option>
+            <option value="DONE" ${l.status==='DONE'?'selected':''}>Done</option>
+          </select>
+        </td>
+        <td class="${isToday(l.createdAt)?'date-today':'date-old'}">${formatDate(l.createdAt)}</td>
+      </tr>
+    `).join('');
+  }
+
+  // ─── STATUS UPDATE ────────────────────────────────────────
+  async function updateStatus(id, newStatus) {
+    try {
+      const res = await fetch(`${API_URL}/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeaders()
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      if (res.status === 401 || res.status === 403) {
+        logout();
+        return;
+      }
+
+      await loadLeads();
+    } catch (err) {
+      console.error('Failed to update status:', err);
+    }
+  }
+
+  // ─── COUNTDOWN ────────────────────────────────────────────
+  function startCountdown() {
+    clearInterval(countdownTimer);
+    countdownVal = REFRESH_INTERVAL;
+    countdownTimer = setInterval(() => {
+      countdownVal--;
+      document.getElementById('countdown').textContent = countdownVal;
+      if (countdownVal <= 0) {
+        loadLeads();
+      }
+    }, 1000);
+  }
+
+  function resetCountdown() {
+    countdownVal = REFRESH_INTERVAL;
+    document.getElementById('countdown').textContent = countdownVal;
+    startCountdown();
+  }
+
+  // ─── HELPERS ──────────────────────────────────────────────
+  function esc(str) {
+    if (!str) return '—';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function isToday(dateStr) {
+    const d   = new Date(dateStr);
+    const now = new Date();
+    return d.toDateString() === now.toDateString();
+  }
+
+  function formatDate(dateStr) {
+    const d   = new Date(dateStr);
+    const now = new Date();
+    const diff = Math.floor((now - d) / 86400000);
+    if (diff === 0) return 'Today ' + d.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+    if (diff === 1) return 'Yesterday';
+    return d.toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+  }
 </script>
 </body>
 </html>
