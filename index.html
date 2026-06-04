@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EchoHype — Leads Dashboard</title>
+  <title>Client Portal — Leads Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,9 +34,6 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-
-    /* ── LAYOUT ── */
-
 
     /* ── AUTH SCREEN ── */
     #auth-screen {
@@ -80,7 +77,6 @@
       color: var(--muted);
       margin-bottom: 2rem;
       text-align: center;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     .auth-box input {
@@ -89,7 +85,6 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.75rem 1rem;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: 14px;
       color: var(--text);
       margin-bottom: 1rem;
@@ -106,11 +101,11 @@
       border: none;
       border-radius: 8px;
       padding: 0.75rem;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: opacity 0.2s;
+      margin-top: 0.5rem;
     }
 
     .auth-btn:hover { opacity: 0.85; }
@@ -120,6 +115,7 @@
       color: var(--danger);
       margin-top: 0.75rem;
       display: none;
+      text-align: center;
     }
 
     /* ── MAIN DASHBOARD ── */
@@ -127,9 +123,8 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      display: none;
     }
-
-    #dashboard { display: none; }
 
     header {
       display: flex;
@@ -162,7 +157,6 @@
 
     .refresh-indicator {
       font-size: 13px;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: var(--muted);
       display: flex;
       align-items: center;
@@ -184,7 +178,6 @@
       border-radius: 8px;
       padding: 0.5rem 1rem;
       cursor: pointer;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       transition: all 0.2s;
     }
 
@@ -256,7 +249,6 @@
     .stat-sub {
       font-size: 13px;
       color: var(--muted);
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     /* ── FILTERS ── */
@@ -274,7 +266,6 @@
 
     .filter-label {
       font-size: 12px;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: var(--muted);
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -286,7 +277,6 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.5rem 2rem 0.5rem 0.75rem;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: 13px;
       color: var(--text);
       cursor: pointer;
@@ -301,13 +291,11 @@
     select.filter-select:hover,
     select.filter-select:focus {
       border-color: var(--accent);
-      outline: none;
     }
 
     .result-count {
       margin-left: auto;
       font-size: 13px;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       color: var(--muted);
     }
 
@@ -350,7 +338,6 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--text);
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     tr:last-child td { border-bottom: none; }
@@ -376,46 +363,26 @@
     th:nth-child(6), td:nth-child(6) { width: 10%; }
     th:nth-child(7), td:nth-child(7) { width: 10%; }
 
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: capitalize;
-    }
-
-    .badge-NEW       { background: rgba(122, 100, 220, 0.2); color: #a896f0; }
-    .badge-CONTACTED { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-    .badge-DONE      { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-
     select.status-select {
       background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 0.4rem 1.6rem 0.4rem 0.6rem;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-size: 12px;
       color: var(--text);
       cursor: pointer;
       outline: none;
       width: 100%;
       appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a64dc' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 0.4rem center;
-      color-scheme: dark;
       transition: all 0.2s;
     }
 
     select.status-select:hover,
     select.status-select:focus {
       border-color: var(--accent);
-      outline: none;
     }
 
     select.status-select option {
@@ -432,7 +399,6 @@
       padding: 4rem 2rem;
       color: var(--muted);
       font-size: 14px;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     .empty-state strong {
@@ -467,7 +433,6 @@
     .phone-link {
       color: var(--accent);
       text-decoration: none;
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       font-weight: 500;
       transition: opacity 0.2s;
     }
@@ -484,20 +449,20 @@
   <span class="dot-blink">Loading</span>
 </div>
 
-
-<!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
-    <div class="auth-logo">EchoHype</div>
-    <h1>Leads Dashboard</h1>
-    <p>Enter your password to continue.</p>
+    <div class="auth-logo">Lead Manager</div>
+    <h1>Client Portal</h1>
+    <p>Enter your credentials to access your leads.</p>
+
+    <input type="text" id="usr-input" placeholder="Username" onkeydown="if(event.key==='Enter') tryLogin()"/>
     <input type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter') tryLogin()"/>
+
     <button class="auth-btn" onclick="tryLogin()">Sign in</button>
-    <div class="auth-error" id="auth-error">Incorrect password. Try again.</div>
+    <div class="auth-error" id="auth-error">Incorrect username or password.</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashboard">
   <header>
     <div class="header-left">
@@ -512,37 +477,37 @@
     </div>
   </header>
 
-   <main>
-     <div class="stats">
-       <div class="stat">
-         <div class="stat-content">
-           <div class="stat-label">Total Leads</div>
-           <div class="stat-value" id="stat-total">—</div>
-           <div class="stat-sub">all time</div>
-         </div>
-       </div>
-       <div class="stat">
-         <div class="stat-content">
-           <div class="stat-label">New Leads</div>
-           <div class="stat-value" id="stat-new">—</div>
-           <div class="stat-sub">awaiting follow-up</div>
-         </div>
-       </div>
-       <div class="stat">
-         <div class="stat-content">
-           <div class="stat-label">This Month</div>
-           <div class="stat-value" id="stat-month">—</div>
-           <div class="stat-sub" id="stat-month-label">—</div>
-         </div>
-       </div>
-       <div class="stat">
-         <div class="stat-content">
-           <div class="stat-label">Conversion Rate</div>
-           <div class="stat-value" id="stat-rate">—</div>
-           <div class="stat-sub">converted / total</div>
-         </div>
-       </div>
-     </div>
+  <main>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">Total Leads</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">all time</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">New Leads</div>
+          <div class="stat-value" id="stat-new">—</div>
+          <div class="stat-sub">awaiting follow-up</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">This Month</div>
+          <div class="stat-value" id="stat-month">—</div>
+          <div class="stat-sub" id="stat-month-label">—</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-content">
+          <div class="stat-label">Conversion Rate</div>
+          <div class="stat-value" id="stat-rate">—</div>
+          <div class="stat-sub">converted / total</div>
+        </div>
+      </div>
+    </div>
 
     <div class="filters">
       <span class="filter-label">Status</span>
@@ -564,15 +529,15 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Business</th>
-            <th>Challenge</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Business</th>
+          <th>Challenge</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
         </thead>
         <tbody id="tbody"></tbody>
       </table>
@@ -595,12 +560,13 @@
 
   // ─── AUTH ─────────────────────────────────────────────────
   async function tryLogin() {
-    const val = document.getElementById('pwd-input').value.trim();
+    const usrVal = document.getElementById('usr-input').value.trim();
+    const pwdVal = document.getElementById('pwd-input').value.trim();
     const errorEl = document.getElementById('auth-error');
     const loginBtn = document.querySelector('.auth-btn');
 
-    if (!val) {
-      errorEl.textContent = 'Please enter your password.';
+    if (!usrVal || !pwdVal) {
+      errorEl.textContent = 'Please enter both username and password.';
       errorEl.style.display = 'block';
       return;
     }
@@ -610,23 +576,22 @@
     loginBtn.textContent = 'Signing in...';
 
     try {
+      // NEW: Sending both username and password to map to UserDto
       const res = await fetch(AUTH_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: val })
+        body: JSON.stringify({ username: usrVal, password: pwdVal })
       });
 
       if (!res.ok) {
-        throw new Error(res.status === 401 ? 'Invalid password.' : 'Authentication failed.');
+        throw new Error(res.status === 401 ? 'Invalid username or password.' : 'Authentication failed.');
       }
 
       let token = '';
       try {
         const data = await res.json();
         token = data?.token || '';
-      } catch (_) {
-        // Allow auth endpoints that return empty 200 responses.
-      }
+      } catch (_) {}
 
       sessionStorage.setItem(SESSION_TOKEN_KEY, token || 'validated');
       showDashboard();
@@ -639,10 +604,10 @@
     }
   }
 
-   function logout() {
-     sessionStorage.removeItem(SESSION_TOKEN_KEY);
-     location.reload();
-   }
+  function logout() {
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    location.reload();
+  }
 
   // ─── INIT ─────────────────────────────────────────────────
   window.addEventListener('load', () => {
@@ -654,12 +619,12 @@
     }
   });
 
-   function showDashboard() {
-     document.getElementById('auth-screen').style.display  = 'none';
-     document.getElementById('dashboard').style.display    = 'block';
-     loadLeads();
-     startCountdown();
-   }
+  function showDashboard() {
+    document.getElementById('auth-screen').style.display  = 'none';
+    document.getElementById('dashboard').style.display    = 'flex';
+    loadLeads();
+    startCountdown();
+  }
 
   function getAuthHeaders() {
     const token = sessionStorage.getItem(SESSION_TOKEN_KEY);
@@ -679,7 +644,7 @@
 
     try {
       const res = await fetch(url, { headers: getAuthHeaders() });
-      if (res.status === 401) {
+      if (res.status === 401 || res.status === 403) {
         logout();
         return;
       }
@@ -748,7 +713,7 @@
   function renderTable(leads) {
     const tbody = document.getElementById('tbody');
     document.getElementById('result-count').textContent =
-      leads.length + ' lead' + (leads.length !== 1 ? 's' : '');
+            leads.length + ' lead' + (leads.length !== 1 ? 's' : '');
 
     if (leads.length === 0) {
       tbody.innerHTML = `
@@ -783,7 +748,7 @@
   // ─── STATUS UPDATE ────────────────────────────────────────
   async function updateStatus(id, newStatus) {
     try {
-      await fetch(`${API_URL}/${id}/status`, {
+      const res = await fetch(`${API_URL}/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -791,6 +756,12 @@
         },
         body: JSON.stringify({ status: newStatus })
       });
+
+      if (res.status === 401 || res.status === 403) {
+        logout();
+        return;
+      }
+
       await loadLeads();
     } catch (err) {
       console.error('Failed to update status:', err);
